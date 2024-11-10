@@ -1,0 +1,29 @@
+# ##################################### #
+# Armedis API Microservice Requirements #
+# ##################################### #
+
+# Core
+fastapi
+pydantic
+pydantic-settings
+sqlalchemy
+sqlmodel
+uvicorn
+uvicorn[standard]
+watchfiles
+
+# Azure
+azure-appconfiguration-provider
+azure-keyvault-secrets
+# azure-monitor-opentelemetry==1.6.1
+azure-monitor-opentelemetry==1.6.4
+# azure-monitor-opentelemetry-exporter==1.0.0b28
+azure-monitor-opentelemetry-exporter==1.0.0b32
+azure-identity
+psycopg2-binary
+setuptools
+
+# Telemetry
+opentelemetry-instrumentation-fastapi
+opentelemetry-instrumentation-sqlalchemy
+opentelemetry-instrumentation-logging

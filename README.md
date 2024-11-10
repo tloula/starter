@@ -1,5 +1,8 @@
 # Starter
+
 Starter code for my go-to backend setup.
+
+## What's Included
 
 Bicep file for creating the following Azure resources:
 
@@ -19,8 +22,25 @@ Bicep file for creating the following Azure resources:
   - PostgresSQL Password
 - Cosmos DB PostgreSQL Database
 
-Boilerplate Python code for API:
+Boilerplate Python container code for API:
+
 - FastAPI
 - Pydantic
 - SQLAlchemy / SQLModel
 - Opentelemetry
+
+## Getting Started
+
+### Requirements
+
+Ensure the following tools are installed on your machine.
+
+- Docker
+- Azure CLI
+- Python
+
+### Setup
+
+1. `init.ps1`
+2. `deploy-iaas.ps1`
+3. `deploy.ps1`

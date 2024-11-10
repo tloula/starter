@@ -1,0 +1,28 @@
+# #################################### #
+# Armedis Microservices Docker Compose #
+# #################################### #
+
+services:
+  # ##### DATA PROCESSOR SERVICE ##### #
+  api:
+    build:
+      context: .
+      dockerfile: .\api\Dockerfile
+    environment:
+      DOCKER_COMPOSE: "true"
+      SERVICE_VERSION: ${SERVICE_VERSION}
+      AZURE_CLIENT_ID: ${AZURE_CLIENT_ID}
+      AZURE_TENANT_ID: ${AZURE_TENANT_ID}
+      AZURE_CLIENT_SECRET: ${AZURE_CLIENT_SECRET}
+      SERVICE_NAME: "api"
+    container_name: api
+    command: uvicorn api.main:app --host 0.0.0.0 --port 80 --reload --reload-include *.py # Run FastAPI
+    ports:
+      - "8082:80"
+      - 5678:5678 # for debugging
+    volumes:
+      - ./api:/app/api
+      - ./shared:/app/shared
+
+networks:
+  hello-dapr: null
