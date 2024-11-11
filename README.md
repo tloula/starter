@@ -46,3 +46,14 @@ Run `deploy.ps1`. Specify the following when requested.
 - `LOCATION`: The Azure location to create resources in (i.e. eastus).
 - `PROJECT_NAME`: The name or codename for your project. The Azure resource group and all created resources will use this name. Ensure it is unique to prevent resource creation failures.
 - `CONTAINER_NAME` The name of the container. Defaults to `api`.
+
+### Individual Scripts
+
+`deploy.ps1` executes the following scripts sequentially.
+You can also run any of them individually, i.e. to just deploy your container without everything else.
+All the scripts are idempotent, meaning they can be run repeatedly without any issues.
+
+1. `parameters.ps1`: prompts for user input to set environment variables and save values to `.env.dev`.
+2. `deploy-entra.ps1`: creates an Entra app (for dev container authentication), creates an Entra security group for all team members, adds the Entra app to the security group.
+3. `deploy-infra.ps1`: deploys the Bicep templates to Azure.
+4. `deploy-app.ps1`: deploys the container to Azure Container Apps.

@@ -1,8 +1,8 @@
 # Dependency paths
 $parameterScriptPath = "scripts/parameters.ps1"
 $entraScriptPath = "scripts/deploy-entra.ps1"
-$iaasDeployScriptPath = "scripts/deploy-iaas.ps1"
-$apiDeployScriptPath = "scripts/deploy-api.ps1"
+$infraDeployScriptPath = "scripts/deploy-infra.ps1"
+$apiDeployScriptPath = "scripts/deploy-app.ps1"
 
 # Dependency checks
 if (-not (Test-Path $parameterScriptPath)) {
@@ -13,7 +13,7 @@ if (-not (Test-Path $entraScriptPath)) {
     Write-Host "Azure Entra setup script not found." -ForegroundColor Red
     exit
 }
-if (-not (Test-Path $iaasDeployScriptPath)) {
+if (-not (Test-Path $infraDeployScriptPath)) {
     Write-Host "Azure IaaS deployment script not found." -ForegroundColor Red
     exit
 }
@@ -32,12 +32,12 @@ Write-Host "Creating Azure Entra resources..."
 . .\$entraScriptPath
 Write-Host "Creating Azure Entra resources... Done" -ForegroundColor Green
 
-# AZURE IaaS
+# AZURE INFRA
 Write-Host "Deploying infrastructure resources..."
-. .\$iaasDeployScriptPath
+. .\$infraDeployScriptPath
 Write-Host "Deploying infrastructure resources... Done" -ForegroundColor Green
 
-# API
+# CONTAINER APP
 Write-Host "Deploying API to Azure Container App..."
 . .\$apiDeployScriptPath
 Write-Host "Deploying API to Azure Container App... Done" -ForegroundColor Green

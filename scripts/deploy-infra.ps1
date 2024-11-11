@@ -1,4 +1,7 @@
+. "$PSScriptRoot\functions.ps1"
+
 # Dependency paths
+$envFilePath = ".env.dev"
 $mainBicepPath = "bicep/main.bicep"
 $bicepParametersPath = "bicep/.bicepparam"
 
@@ -17,6 +20,12 @@ if (-not (Test-Path $bicepParametersPath)) {
     Write-Host "Bicep parameters file not found." -ForegroundColor Red
     exit
 }
+if (-not (Test-Path $envFilePath)) {
+    Write-Host ".env.dev file not found." -ForegroundColor Red
+    exit
+}
+
+Set-EnvVarsFromDotEnvFile -filePath $envFilePath
 
 # Environment variables required in .bicepparam file
 if (-not ($env:PROJECT_NAME)) {

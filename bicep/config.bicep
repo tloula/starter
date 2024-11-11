@@ -75,8 +75,9 @@ resource roleAssignmentAppConfig 'Microsoft.Authorization/roleAssignments@2022-0
   }
 }
 
+// Key Vault Secrets User: Read Key Vault Secrets
 resource roleAssignmentKeyVault 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(resourceGroup().id, projectName, keyVault.name, 'keyvaultsecretsuser')
+  name: guid(resourceGroup().id, projectName, keyVault.name, 'keyvaultsecretsofficer')
   scope: keyVault
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')

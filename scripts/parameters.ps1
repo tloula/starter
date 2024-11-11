@@ -1,79 +1,4 @@
-# Function to read .env.dev file and return a hashtable of key-value pairs
-function Read-DotEnvFile {
-    param (
-        [string]$filePath
-    )
-
-    $projectVariables = @{}
-    if (Test-Path $filePath) {
-        $lines = Get-Content $filePath
-        foreach ($line in $lines) {
-            if ($line -match '^\s*#') { continue } # Skip comments
-            if ($line -match '^\s*$') { continue } # Skip empty lines
-            if ($line -match '^\s*([^=]+)\s*=\s*(.*)\s*$') {
-                $key = $matches[1].Trim()
-                $value = $matches[2].Trim()
-                $projectVariables[$key] = $value
-            }
-        }
-    }
-    return $projectVariables
-}
-
-# Function to save environment variables to .env.dev file
-function Save-DotEnvFile {
-    param (
-        [string]$filePath,
-        [hashtable]$projectVariables
-    )
-
-    # Read the existing file content
-    $existingLines = @()
-    if (Test-Path $filePath) {
-        $existingLines = Get-Content $filePath
-    }
-
-    # Create a hashtable to store the updated variables
-    $updatedVariables = @{}
-
-    # Process each line and update the variables
-    for ($i = 0; $i -lt $existingLines.Count; $i++) {
-        $line = $existingLines[$i]
-        if ($line -match '^\s*#') { continue } # Skip comments
-        if ($line -match '^\s*$') { continue } # Skip empty lines
-        if ($line -match '^\s*([^=]+)\s*=\s*(.*)\s*$') {
-            $key = $matches[1].Trim()
-            if ($projectVariables.ContainsKey($key)) {
-                $existingLines[$i] = "$key=$($projectVariables[$key])"
-                $updatedVariables[$key] = $true
-            }
-        }
-    }
-
-    # Add any new variables that were not already in the file
-    foreach ($key in $projectVariables.Keys) {
-        if (-not $updatedVariables.ContainsKey($key)) {
-            $existingLines += "$key=$($projectVariables[$key])"
-        }
-    }
-
-    # Write the updated content back to the file
-    Set-Content -Path $filePath -Value $existingLines
-}
-
-# Function to prompt for input with a default value
-function Prompt-ForInput {
-    param (
-        [string]$prompt,
-        [string]$defaultValue
-    )
-
-    $input = Read-Host "$prompt [$defaultValue]"
-    if ([string]::IsNullOrWhiteSpace($input)) {
-        return $defaultValue
-    }
-    return $input
-}
+. "$PSScriptRoot\functions.ps1"
 
 # Dependency paths
 $envFilePath = ".env.dev"
@@ -84,12 +9,17 @@ if (-not (Test-Path $envFilePath)) {
     exit
 }
 
-$projectVariables = Read-DotEnvFile -filePath $envFilePath
+Set-EnvVarsFromDotEnvFile -filePath $envFilePath
+
+# Set the Azure tenant ID based on the current account if not set
+if (-not ($env:AZURE_TENANT_ID)) {
+    $env:AZURE_TENANT_ID = az account show --query tenantId -o tsv
+}
 
 # Prompt for input to set/update environment variables
-$env:LOCATION = (Prompt-ForInput -prompt "Enter Azure location (i.e. eastus)" -defaultValue $projectVariables['LOCATION']).ToLower()
-$env:PROJECT_NAME = (Prompt-ForInput -prompt "Enter your project name" -defaultValue $projectVariables['PROJECT_NAME']).ToLower()
-$env:CONTAINER_NAME = (Prompt-ForInput -prompt "Enter your container name" -defaultValue $projectVariables['CONTAINER_NAME']).ToLower()
+$env:LOCATION = (Prompt-ForInput -prompt "Enter Azure location" -defaultValue $env:LOCATION).ToLower()
+$env:PROJECT_NAME = (Prompt-ForInput -prompt "Enter your project name" -defaultValue $env:PROJECT_NAME).ToLower()
+$env:CONTAINER_NAME = (Prompt-ForInput -prompt "Enter your container name" -defaultValue $env:CONTAINER_NAME).ToLower()
 
 # Save the environment variables to .env.dev file
 $projectVariables = @{
