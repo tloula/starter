@@ -41,6 +41,8 @@ Ensure the following tools are installed on your machine.
 
 ### Setup
 
-1. `init.ps1`
-2. `deploy-iaas.ps1`
-3. `deploy.ps1`
+Run `deploy.ps1`. Specify the following when requested.
+
+- `LOCATION`: The Azure location to create resources in (i.e. eastus).
+- `PROJECT_NAME`: The name or codename for your project. The Azure resource group and all created resources will use this name. Ensure it is unique to prevent resource creation failures.
+- `CONTAINER_NAME` The name of the container. Defaults to `api`.

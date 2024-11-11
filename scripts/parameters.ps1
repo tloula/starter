@@ -76,35 +76,20 @@ function Prompt-ForInput {
 }
 
 # Dependency paths
-$entraSetupScriptPath = "setup/entra-setup.ps1"
-$iaasDeployScriptPath = "setup/deploy-iaas.ps1"
 $envFilePath = ".env.dev"
 
-$projectVariables = Read-DotEnvFile -filePath $envFilePath
-
 # Dependency checks
-if (-not (Test-Path $entraSetupScriptPath)) {
-    Write-Host "Azure Entra setup script not found." -ForegroundColor Red
-    exit
-}
-if (-not (Test-Path $iaasDeployScriptPath)) {
-    Write-Host "Azure IaaS deployment script not found." -ForegroundColor Red
-    exit
-}
 if (-not (Test-Path $envFilePath)) {
     Write-Host ".env.dev file not found." -ForegroundColor Red
     exit
 }
 
-# Initialize project variables
+$projectVariables = Read-DotEnvFile -filePath $envFilePath
+
+# Prompt for input to set/update environment variables
 $env:LOCATION = (Prompt-ForInput -prompt "Enter Azure location (i.e. eastus)" -defaultValue $projectVariables['LOCATION']).ToLower()
 $env:PROJECT_NAME = (Prompt-ForInput -prompt "Enter your project name" -defaultValue $projectVariables['PROJECT_NAME']).ToLower()
 $env:CONTAINER_NAME = (Prompt-ForInput -prompt "Enter your container name" -defaultValue $projectVariables['CONTAINER_NAME']).ToLower()
-
-# Run entra-setup.ps1 script
-Write-Host "Creating Azure Entra resources..."
-. .\$entraSetupScriptPath
-Write-Host "Creating Azure Entra resources... Done" -ForegroundColor Green
 
 # Save the environment variables to .env.dev file
 $projectVariables = @{
@@ -116,10 +101,3 @@ $projectVariables = @{
 }
 Save-DotEnvFile -filePath $envFilePath -projectVariables $projectVariables
 Write-Host "Configuration saved to $envFilePath"
-
-# Deploy the Bicep template
-Write-Host "Deploying Azure ARM resources..."
-. .\$iaasDeployScriptPath
-Write-Host "Deploying Azure ARM resources... Done" -ForegroundColor Green
-
-Write-Host "Initialization complete." -ForegroundColor Green
