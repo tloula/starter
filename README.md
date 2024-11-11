@@ -4,6 +4,11 @@ Starter code for my go-to backend setup.
 
 ## What's Included
 
+Script for initializing Entra resources:
+
+- Entra App (used to authenticate the container running on a dev machine since DefaultAzureCredential's token auth methods don't work in containers)
+- Entra Security Group TM-<Project-Name> for easily controlling RBAC to Azure resources.
+
 Bicep file for creating the following Azure resources:
 
 - Log Analytics Workspace
@@ -14,7 +19,7 @@ Bicep file for creating the following Azure resources:
   - Key Vault Secrets User
 - Container Registry
 - Container App Environment
-- Container App "api"
+- Container App
 - App Configuration
 - Key Vault
   - App Insights Connection String
