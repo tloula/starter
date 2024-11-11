@@ -78,3 +78,7 @@ Add-ObjectToGroupIfNotMember -groupId $groupId -objectId $appServicePrincipalObj
 
 $currentUserObjectId = (az ad signed-in-user show --query id -o tsv)
 Add-ObjectToGroupIfNotMember -groupId $groupId -objectId $currentUserObjectId -objectName "Current user"
+
+# ########## SAVE PROJECT ENVIRONMENT VARIABLES ########## #
+
+Save-EnvVarsToDotEnvFile -filePath $envFilePath

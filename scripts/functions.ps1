@@ -75,6 +75,21 @@ function Set-EnvVarsFromDotEnvFile {
     }
 }
 
+function Save-EnvVarsToDotEnvFile {
+    param (
+        [string]$filePath
+    )
+
+    $projectVariables = @{
+        PROJECT_NAME = $env:PROJECT_NAME
+        CONTAINER_NAME = $env:CONTAINER_NAME
+        LOCATION = $env:LOCATION
+        AZURE_CLIENT_ID = $env:AZURE_CLIENT_ID
+        AZURE_TENANT_ID = $env:AZURE_TENANT_ID
+    }
+    Save-DotEnvFile -filePath $envFilePath -projectVariables $projectVariables
+}
+
 # Function to prompt for input with a default value
 function Prompt-ForInput {
     param (

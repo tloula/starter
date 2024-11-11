@@ -22,12 +22,5 @@ $env:PROJECT_NAME = (Prompt-ForInput -prompt "Enter your project name" -defaultV
 $env:CONTAINER_NAME = (Prompt-ForInput -prompt "Enter your container name" -defaultValue $env:CONTAINER_NAME).ToLower()
 
 # Save the environment variables to .env.dev file
-$projectVariables = @{
-    PROJECT_NAME = $env:PROJECT_NAME
-    CONTAINER_NAME = $env:CONTAINER_NAME
-    LOCATION = $env:LOCATION
-    AZURE_CLIENT_ID = $env:AZURE_CLIENT_ID
-    AZURE_TENANT_ID = $env:AZURE_TENANT_ID
-}
-Save-DotEnvFile -filePath $envFilePath -projectVariables $projectVariables
-Write-Host "Configuration saved to $envFilePath"
+Save-EnvVarsToDotEnvFile -filePath $envFilePath
+Write-Host "Configuration saved to $envFilePath" -ForegroundColor Green
