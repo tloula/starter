@@ -41,11 +41,11 @@ Ensure the following tools are installed on your machine.
 
 ### Setup
 
-Run `deploy.ps1`. Specify the following when requested.
+Run `deploy.ps1` specifying the following when requested.
 
-- `LOCATION`: The Azure location to create resources in (i.e. eastus).
-- `PROJECT_NAME`: The name or codename for your project. The Azure resource group and all created resources will use this name. Ensure it is unique to prevent resource creation failures.
-- `CONTAINER_NAME` The name of the container. Defaults to `api`.
+- `LOCATION`: the Azure region to create resources in (i.e. eastus).
+- `PROJECT_NAME`: the name or codename for your project. The Azure resource group and all created resources will use this name. Ensure it is unique to prevent resource creation failures.
+- `CONTAINER_NAME`: the name of the container, defaults to `api`.
 
 ### Individual Scripts
 
