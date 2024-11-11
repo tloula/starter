@@ -1,1 +1,0 @@
-az deployment group create --resource-group armedis --template-file main.bicep
